@@ -24,7 +24,7 @@ img {
 </style>
 """
 
-FILE_TYPES = ["csv", "py", "png", "jpg","xlsx"]
+FILE_TYPES = ["csv","xlsx"]
 
 translator = Translator()
 
@@ -103,7 +103,7 @@ def main():
     file = st.file_uploader("Upload file", type=FILE_TYPES)
     show_file = st.empty()
     if not file:
-        show_file.info("Please upload a file of type: " + ", ".join(FILE_TYPES))
+        show_file.info("Lütfen şu uzantılı dosyaları yükleyin: " + ", ".join(FILE_TYPES))
         return
 
     file_type = get_file_type(file)
