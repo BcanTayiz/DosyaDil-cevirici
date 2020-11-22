@@ -8,7 +8,7 @@ import os
 import base64
 import xlsxwriter
 
-
+translator = Translator()
 
 st.title("Only for .csv and .xlsx files")
 
