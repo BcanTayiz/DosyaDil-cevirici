@@ -6,3 +6,4 @@ requests==2.25.0
 docx==0.2.4
 hyper==0.7.0
 pytest==6.1.2
+googletrans==3.0.0
