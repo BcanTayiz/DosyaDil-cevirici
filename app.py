@@ -140,7 +140,7 @@ main()
 translator = Translator()
 
 st.title("Excel ve csv dosyalarınızı burada herhangi bir dilden Türkçe'ye dönüştürebilirsiniz")
-st.header("Google Translate ile bağlantılı çalışığından, hata verdiği zaman bir kaç kere tekrar denerseniz veya sayfayı yenilerseniz program çalışacaktır.")
+st.header("Bu program Google Translate ile bağlantılı çalıştığından, hata verdiği zaman bir kaç kere tekrar denerseniz veya sayfayı yenilerseniz program çalışacaktır.")
 
 
 
