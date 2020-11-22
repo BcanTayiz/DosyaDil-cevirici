@@ -3,22 +3,18 @@ import pandas as pd
 import numpy as np
 import googletrans
 from googletrans import Translator
-import streamlit as st
 import os
 import base64
 import xlsxwriter
 from io import StringIO
 import cgi
-from bs4 import BeautifulSoup
-import asyncio
-import time 
+
+
 
 from enum import Enum
 from io import BytesIO, StringIO
 from typing import Union
 
-import pandas as pd
-import streamlit as st
 
 STYLE = """
 <style>
@@ -32,6 +28,7 @@ FILE_TYPES = ["csv", "py", "png", "jpg","xlsx"]
 
 translator = Translator()
 
+st.title("")
 
 class FileType(Enum):
     """Used to distinguish between file types"""
@@ -142,8 +139,8 @@ main()
 
 translator = Translator()
 
-st.title("Only for .csv and .xlsx files")
-st.header("Force the app 2-3 times it will work for csv or excel files")
+st.title("Excel ve csv dosyalarınızı burada herhangi bir dilden Türkçe'ye dönüştürebilirsiniz")
+st.header("Google Translate ile bağlantılı çalışığından, hata verdiği zaman bir kaç kere tekrar denerseniz veya sayfayı yenilerseniz program çalışacaktır.")
 
 
 
