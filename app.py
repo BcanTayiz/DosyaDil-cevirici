@@ -10,13 +10,7 @@ import xlsxwriter
 
 
 
-translator = Translator()
-
-sentence = """I think ordinary people may also be extraordinary."""
-
-example = translator.translate(sentence,dest="tr").text
-
-st.write(example)
+st.title("Only for .csv and .xlsx files")
 
 
 def file_selector(folder_path='.'):
