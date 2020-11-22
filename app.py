@@ -7,18 +7,60 @@ import streamlit as st
 import os
 import base64
 import xlsxwriter
+from io import StringIO
+import cgi
+from bs4 import BeautifulSoup
+import asyncio
+import time 
+
+from enum import Enum
+from io import BytesIO, StringIO
+from typing import Union
+
+import pandas as pd
+import streamlit as st
+
+STYLE = """
+<style>
+img {
+    max-width: 100%;
+}
+</style>
+"""
+
+FILE_TYPES = ["csv", "py", "png", "jpg","xlsx"]
 
 translator = Translator()
 
-st.title("Only for .csv and .xlsx files")
+
+class FileType(Enum):
+    """Used to distinguish between file types"""
+
+    IMAGE = "Image"
+    CSV = "csv"
+    PYTHON = "Python"
+    EXCEL = "Excel"
 
 
-def file_selector(folder_path='.'):
-    filenames = os.listdir(folder_path)
-    selected_filename = st.selectbox('Select a file', filenames)
-    path = os.path.dirname(os.path.abspath(selected_filename))
-    path = path + "/" + selected_filename
-    return path 
+def get_file_type(file: Union[BytesIO, StringIO]) -> FileType:
+    """The file uploader widget does not provide information on the type of file uploaded so we have
+    to guess using rules or ML. See
+    [Issue 896](https://github.com/streamlit/streamlit/issues/896)
+
+    I've implemented rules for now :-)
+
+    Arguments:
+        file {Union[BytesIO, StringIO]} -- The file uploaded
+
+    Returns:
+        FileType -- A best guess of the file type
+    """
+    content = file.getvalue()
+
+    if ('xlsx' in file.name):
+        return FileType.EXCEL
+
+    return FileType.CSV
 
 def get_table_download_link(df):
     """Generates a link allowing the data in a given panda dataframe to be downloaded
@@ -50,30 +92,60 @@ def translate_download(dataFrame):
     df_tr.replace(translations, inplace = True)
     get_table_download_link(df_tr)
 
-
-filename = file_selector()
-st.write('You selected `%s`' % filename)
+    
 
 
+    
 
-if "csv" in filename:
-    try:
-        data = pd.read_csv(filename)
-    except:
-        data = pd.read_csv(filename,error_bad_lines = False)
 
-    translate_download(data)
+def main():
+    """Run this function to display the Streamlit app"""
+    st.info(__doc__)
+    st.markdown(STYLE, unsafe_allow_html=True)
 
-else: 
-    try:
-        data = pd.read_excel(filename)
-    except:
-        try:
-            data = pd.read_excel(filename,index_col=None, header=None)
-        except:
-            data = pd.read_html(filename)
+    file = st.file_uploader("Upload file", type=FILE_TYPES)
+    show_file = st.empty()
+    if not file:
+        show_file.info("Please upload a file of type: " + ", ".join(FILE_TYPES))
+        return
 
-    translate_download(data)
+    file_type = get_file_type(file)
+    if file_type == FileType.IMAGE:
+        show_file.image(file)
+    elif file_type == FileType.PYTHON:
+        st.code(file.getvalue())
+    else:
+        if file_type ==  FileType.CSV:
+            try:
+                data = pd.read_csv(file)
+            except:
+                data = pd.read_csv(file,error_bad_lines = False)
+
+            translate_download(data)
+
+        else: 
+            try:
+                data = pd.read_excel(file)
+            except:
+                try:
+                    data = pd.read_excel(file,index_col=None, header=None)
+                except:
+                    data = pd.read_html(file)
+
+            translate_download(data)
+
+    file.close()
+
+
+main()
+
+
+translator = Translator()
+
+st.title("Only for .csv and .xlsx files")
+st.header("Force the app 2-3 times it will work for csv or excel files")
+
+
 
 
 
