@@ -97,11 +97,11 @@ def translate_download(dataFrame):
 
 def main():
     """Run this function to display the Streamlit app"""
-    st.info(__doc__)
+    #st.info(__doc__)
     st.markdown(STYLE, unsafe_allow_html=True)
 
     file = st.file_uploader("Upload file", type=FILE_TYPES)
-    show_file = st.empty()
+    #show_file = st.empty()
     if not file:
         show_file.info("Lütfen şu uzantılı dosyaları yükleyin: " + ", ".join(FILE_TYPES))
         return
