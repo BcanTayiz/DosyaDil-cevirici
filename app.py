@@ -23,7 +23,7 @@ def file_selector(folder_path='.'):
     filenames = os.listdir(folder_path)
     selected_filename = st.selectbox('Select a file', filenames)
     path = os.path.dirname(os.path.abspath(selected_filename))
-    path = path + "\\" + selected_filename
+    path = path + "/" + selected_filename
     return path 
 
 def get_table_download_link(df):
